@@ -61,10 +61,8 @@ void setup() {
   pinMode(dataReg, OUTPUT);
   pinMode(dataKey, INPUT);
   pinMode(clockKey, OUTPUT);
-  Serial.begin(9600);
   
   keyboard.begin(4);
-  Serial.begin(9600);
 }
 
 void loop() {
@@ -75,8 +73,8 @@ void loop() {
 }
 
 void begin_type()  {
-  if(keyboard.available()) {          //if keyboard is connected
-    byte key = keyboard.read();       //read typed key
+  if(keyboard.available()) {          //if key is in buffer
+    byte key = keyboard.read();       //read key in buffer
 
     while (key != PS2_KC_ENTER) {     //while key typed is not enter
       
