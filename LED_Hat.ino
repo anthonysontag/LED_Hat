@@ -1,4 +1,4 @@
-/* The Goal of this code is to have a keyboard give input to an Arduino
+/* This code will allow a keyboard give input to an Arduino platform
  and have the Arduino scroll the input across an 7-Hex LED Display*/
 
 #include <PS2Keyboard.h>
@@ -49,7 +49,7 @@ PS2Keyboard keyboard;
 
 //holders for infomation being passed to the shifting function
 byte letter;
-byte letterArray[20];
+byte letterArray[10];
 
 void setup() {
   //set interrupt pin to pin 2, function it calls, and trigger type
@@ -68,27 +68,32 @@ void setup() {
 }
 
 void loop() {
-  
+//if switch is flipped
+//start begin_type
+//else continue scrolling current array
+
 }
 
 void begin_type()  {
   if(keyboard.available()) {          //if keyboard is connected
-    key = keyboard.read();             //read typed key
+    byte key = keyboard.read();       //read typed key
 
     while (key != PS2_KC_ENTER) {     //while key typed is not enter
       
       int i;
-      for (int i = 0; i < 20; i++) {  //for 20 iterations
-        byte letter = key;              //Store letter typed in byte
-        byte val = letter-'0';          //
-        letterArray[i] = letter;        //
+      for (int i = 0; i < 10; i++) {  //for 10 iterations
+        byte letter = key;            //store letter typed in byte
+        byte val = letter-'0';        //moves letter one position in the array to the left
+        letterArray[i] = letter;      //stores byte letter in array
       }
-    
-    if else {
-      digitalWrite(latchReg, LOW);    //ground latch pin during transmit
-      shiftOut(dataReg, clockReg, LSBFIRST, i);
-      digitalWrite(latchReg, HIGH);
-    }
     }
   }
-}  
+    else {
+      //ground latch pin during transmit
+      digitalWrite(latchReg, LOW);
+      //clocks the array to the shift registers
+      shiftOut(dataReg, clockReg, LSBFIRST, letterArray);
+      //ungrounds latch pin after transmit
+      digitalWrite(latchReg, HIGH);
+    }
+  } 
